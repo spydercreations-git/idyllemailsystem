@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
 
     try {
       // Only save to database if Supabase is configured
-      if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      if (supabase) {
         const { error: dbError } = await supabase
           .from('emails')
           .insert({
