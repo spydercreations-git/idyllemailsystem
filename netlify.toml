@@ -2,11 +2,13 @@
   command = "npm run build"
   publish = ".next"
 
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
-
 [build.environment]
   NODE_VERSION = "18"
+  NEXT_PUBLIC_SUPABASE_URL = "placeholder"
+  SUPABASE_SERVICE_ROLE_KEY = "placeholder"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
 
 [[redirects]]
   from = "/*"

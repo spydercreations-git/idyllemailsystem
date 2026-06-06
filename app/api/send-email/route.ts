@@ -56,21 +56,24 @@ export async function POST(request: NextRequest) {
     }
 
     try {
-      const { error: dbError } = await supabase
-        .from('emails')
-        .insert({
-          recipient,
-          subject,
-          message,
-          has_attachment: !!attachment,
-          attachment_name: attachment?.name || null,
-          resend_id: emailResult.data?.id,
-          sent_at: new Date().toISOString(),
-          status: 'sent'
-        });
-      
-      if (dbError) {
-        // Silently fail - email was sent successfully
+      // Only save to database if Supabase is configured
+      if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+        const { error: dbError } = await supabase
+          .from('emails')
+          .insert({
+            recipient,
+            subject,
+            message,
+            has_attachment: !!attachment,
+            attachment_name: attachment?.name || null,
+            resend_id: emailResult.data?.id,
+            sent_at: new Date().toISOString(),
+            status: 'sent'
+          });
+        
+        if (dbError) {
+          // Silently fail - email was sent successfully
+        }
       }
     } catch (dbError) {
       // Silently fail - email was sent successfully
